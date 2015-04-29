@@ -115,7 +115,7 @@ class EmailManagerBehavior extends ModelBehavior
 
     	if(!empty($params)) {
 			foreach($params as $key => $param) {
-	    		$url .= '&' . $key . '=' . $param;
+	    		$url .= '&' . $key . '=' . rawurlencode($param);
 	    	}
 		}    	
 
