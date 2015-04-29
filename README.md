@@ -39,7 +39,7 @@ The first parameter is the API method you want to call, the second parameter is 
 
 ```php
   $res = $this->Model->callMethod('contactCreate', array(
-    'name' => 'TehName', 
+    'name' => rawurlencode('TehName TehSurname'), 	//Encode when needed
     'email' => 'email@mail.com',
     'group_id' => 10
   ));
