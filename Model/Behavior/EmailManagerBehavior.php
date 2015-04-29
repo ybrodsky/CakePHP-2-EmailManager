@@ -39,7 +39,7 @@ class EmailManagerBehavior extends ModelBehavior
  * @param array $params EmailManager method parameters
  * @return array $response EmailManager response
  */
-	public function manage(Model $Model, $method = '', $params = array()) {
+	public function callMethod(Model $Model, $method = '', $params = array()) {
 		if(empty($method)) {
 			throw new Exception('Unexistent method');
 		}
