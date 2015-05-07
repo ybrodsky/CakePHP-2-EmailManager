@@ -12,7 +12,7 @@ class EmailManagerBehavior extends ModelBehavior
  *
  * @var string
  */
-	private $baseUrl = 'http://api.emailmanager.com/1.0/?';
+	private $baseUrl = 'http://api.emailmanager.com/1.0/';
 
 /**
  * Setup the behavior and obtain the API KEY
@@ -50,7 +50,7 @@ class EmailManagerBehavior extends ModelBehavior
 		$params = array_merge($params, $default);
 
 		$response = $this->api_connect($Model, $params);
-		$response = json_decode($response, true);
+		$response = unserialize($response);
 
 		return $response;
 	}
@@ -69,8 +69,8 @@ class EmailManagerBehavior extends ModelBehavior
 			'method' => 'authentLogin'
 		);
 		$result = $this->api_connect($Model, $params);
-		$result = json_decode($result, true);
-
+		$result = unserialize($result);
+		
 		if(array_key_exists('apikey', $result[0])) {
 			return $result[0]['apikey'];
 		}else {
@@ -86,16 +86,16 @@ class EmailManagerBehavior extends ModelBehavior
  * @return jsonString $curlResult 
  */
     private function api_connect(Model $Model, $params = array()) {
-        $url = $this->getUrl($this->settings[$Model->alias], $params);
-
+        $data = $this->arrangeData($this->settings[$Model->alias], $params);
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $this->baseUrl);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
+        //dd(curl_getinfo($ch, CURLINFO_HTTP_CODE));
         $curlResult = curl_exec($ch);
 
         return $curlResult;
@@ -108,17 +108,17 @@ class EmailManagerBehavior extends ModelBehavior
  * @param array $params Parameters to be used in the query
  * @return string $url Url correctly formated based on params and settings
  */
-    private function getUrl($settings, $params = array()) {
-    	$url = $this->baseUrl;
-    	$url .= 'domain=' . $settings['domain'];
-    	$url .= '&output=' . $settings['output'];
+    private function arrangeData($settings, $params = array()) {
+    	$data = array();
+    	$data['domain'] = $settings['domain'];
+    	$data['output'] = $settings['output'];
 
     	if(!empty($params)) {
 			foreach($params as $key => $param) {
-	    		$url .= '&' . $key . '=' . $param;
+	    		$data[$key] = $param;
 	    	}
 		}    	
 
-    	return $url;
+    	return $data;
     }
 }
