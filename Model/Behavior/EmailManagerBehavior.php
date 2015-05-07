@@ -102,11 +102,11 @@ class EmailManagerBehavior extends ModelBehavior
     }
 
 /**
- * Creates the URL based on the passed parameters and the basic configuration
+ * Creates the array of data to be passed to the API
  *
  * @param array $settings Basic configuration settings
  * @param array $params Parameters to be used in the query
- * @return string $url Url correctly formated based on params and settings
+ * @return Array $data API query params
  */
     private function arrangeData($settings, $params = array()) {
     	$data = array();
