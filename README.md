@@ -9,7 +9,7 @@ Define the basic configuration
   		'domain' => 'YOUR_DOMAIN',
   		'username' => 'YOUR_USERNAME',
   		'password' => 'YOUR_PASSWORD',
-  		'output' => 'json | xml | php',  //Optional
+  		'output' => 'php',
   		'language' => 'en_US | es_ES'    //Optional 
 	  )	
 ));
@@ -39,7 +39,7 @@ The first parameter is the API method you want to call, the second parameter is 
 
 ```php
   $res = $this->Model->callMethod('contactCreate', array(
-    'name' => rawurlencode('TehName TehSurname'), 	//Encode when needed
+    'name' => 'TehName TehSurname', 
     'email' => 'email@mail.com',
     'group_id' => 10
   ));
